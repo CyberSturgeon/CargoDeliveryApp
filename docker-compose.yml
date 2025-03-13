@@ -1,0 +1,34 @@
+services:
+  web:
+    build:
+      context: ./CargoDeliveryWeb
+      dockerfile: Dockerfile
+      args:
+        BUILD_CONFIGURATION: Release
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://*:8080
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=cargo_db;Username=postgres;Password=postgres;
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db-scripts:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: cargo_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d cargo_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:

@@ -1,0 +1,42 @@
+﻿@model CargoDeliveryWeb.Models.Order
+
+@{
+    ViewData["Title"] = "Детали заказа";
+}
+
+<div class="container mt-4">
+    <h2>@ViewData["Title"]</h2>
+    <hr />
+
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Заказ №@Model.Id</h4>
+        </div>
+
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Город отправителя:</dt>
+                <dd class="col-sm-9">@Model.SenderCity</dd>
+
+                <dt class="col-sm-3">Адрес отправителя:</dt>
+                <dd class="col-sm-9">@Model.SenderAddress</dd>
+
+                <dt class="col-sm-3">Город получателя:</dt>
+                <dd class="col-sm-9">@Model.ReceiverCity</dd>
+
+                <dt class="col-sm-3">Адрес получателя:</dt>
+                <dd class="col-sm-9">@Model.ReceiverAddress</dd>
+
+                <dt class="col-sm-3">Вес груза:</dt>
+                <dd class="col-sm-9">@Model.Weight.ToString("0.00") кг</dd>
+
+                <dt class="col-sm-3">Дата получения:</dt>
+                <dd class="col-sm-9">@Model.PickupDate.ToString("dd.MM.yyyy")</dd>
+            </dl>
+        </div>
+
+        <div class="card-footer">
+            <a asp-action="Index" class="btn btn-outline-primary">Вернуться к списку</a>
+        </div>
+    </div>
+</div>
