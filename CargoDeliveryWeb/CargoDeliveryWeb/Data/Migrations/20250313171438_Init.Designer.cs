@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CargoDeliveryWeb.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250313101201_Init")]
+    [Migration("20250313171438_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -32,7 +32,7 @@ namespace CargoDeliveryWeb.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("PickupDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("date");
 
                     b.Property<string>("ReceiverAddress")
                         .IsRequired()

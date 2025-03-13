@@ -1,0 +1,11 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+CREATE TABLE IF NOT EXISTS Orders (
+    Id SERIAL PRIMARY KEY,
+    SenderCity VARCHAR(100) NOT NULL,
+    SenderAddress VARCHAR(200) NOT NULL,
+    ReceiverCity VARCHAR(100) NOT NULL,
+    ReceiverAddress VARCHAR(200) NOT NULL,
+    Weight DECIMAL(10,2) NOT NULL,
+    PickupDate DATE NOT NULL
+);

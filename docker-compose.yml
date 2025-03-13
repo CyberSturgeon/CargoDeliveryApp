@@ -1,7 +1,7 @@
 services:
   web:
     build:
-      context: ./CargoDeliveryWeb
+      context: ./cargoDeliveryWeb
       dockerfile: Dockerfile
       args:
         BUILD_CONFIGURATION: Release

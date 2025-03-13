@@ -21,7 +21,7 @@ namespace CargoDeliveryWeb.Migrations
                     ReceiverCity = table.Column<string>(type: "text", nullable: false),
                     ReceiverAddress = table.Column<string>(type: "text", nullable: false),
                     Weight = table.Column<double>(type: "double precision", nullable: false),
-                    PickupDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    PickupDate = table.Column<DateTime>(type: "date", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -29,27 +29,23 @@ namespace CargoDeliveryWeb.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("PickupDate")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("date");
 
                     b.Property<string>("ReceiverAddress")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ReceiverCity")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.Property<string>("SenderAddress")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.Property<string>("SenderCity")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.Property<double>("Weight")
                         .HasColumnType("double precision");
