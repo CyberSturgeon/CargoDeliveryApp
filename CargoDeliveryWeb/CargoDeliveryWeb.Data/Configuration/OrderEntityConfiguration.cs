@@ -34,13 +34,6 @@ internal static class OrderEntityConfiguration
             entity.Property(o => o.PickupDate)
                 .HasColumnType("date")
                 .IsRequired();
-
-            entity.HasIndex(o => o.OrderNumber)
-                .IsUnique();
-
-            entity.Property(o => o.OrderNumber)
-                    .HasDefaultValueSql("substr(uuid_generate_v4()::text, 1, 8)")
-                    .IsRequired();
         });
     }
 }

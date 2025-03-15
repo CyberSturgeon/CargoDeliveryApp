@@ -1,5 +1,4 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using CargoDeliveryWeb.Business.Models;
 using CargoDeliveryWeb.Data.Entities;
 
@@ -9,6 +8,6 @@ public class OrderMapperProfile : Profile
 {
     public OrderMapperProfile()
     {
-        CreateMap<OrderModel, Order>();
+        CreateMap<OrderModel, Order>().ReverseMap();
     }
 }

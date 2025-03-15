@@ -1,32 +1,31 @@
-﻿using CargoDeliveryWeb.Data;
+﻿using AutoMapper;
+using CargoDeliveryWeb.Business.Models;
+using CargoDeliveryWeb.Business.Services.Interfaces;
 using CargoDeliveryWeb.Models;
-using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace CargoDeliveryWeb.Controllers;
 
 
-public class OrdersController(AppDbContext _context, IValidator<Order> validator) : Controller
+public class OrdersController(IOrderService orderService, IMapper mapper) : Controller
 {
     [HttpGet]
-    public async Task<IActionResult> Index()
+    public async Task<ActionResult<List<OrderResponse>>> Index()
     {
-        var orders = await _context.Orders
-            .OrderByDescending(o => o.PickupDate)
-            .ToListAsync();
+        var orders = mapper.Map<List<OrderResponse>>(await orderService.GetAllAsync())
+            .OrderByDescending(x => x.Id);
 
         return View(orders);
     }
 
     public IActionResult Create()
     {
-        return View(new Order());
+        return View(new OrderResponse());
     }
 
     [HttpPost()]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(Order order)
+    public async Task<IActionResult> Create(OrderRequest order)
     {
         if (!ModelState.IsValid)
         {
@@ -34,16 +33,14 @@ public class OrdersController(AppDbContext _context, IValidator<Order> validator
         }
         else
         {
-            _context.Orders.Add(order);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Details), new { id = order.Id });
+            await orderService.AddAsync(mapper.Map<OrderModel>(order));
+            return RedirectToAction(nameof(Index));
         }
     }
 
-    public async Task<IActionResult> Details(Guid id)
+    public async Task<ActionResult<OrderResponse>> Details(Guid id)
     {
-        var order = await _context.Orders
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var order = mapper.Map<OrderResponse>(await orderService.GetByIdAsync(id));
 
         return order != null ? View(order) : NotFound();
     }

@@ -1,21 +1,23 @@
-using CargoDeliveryWeb.Data;
-using FluentValidation.AspNetCore;
-using FluentValidation;
-using Microsoft.EntityFrameworkCore;
+using CargoDeliveryWeb.Data.Configuration;
+using CargoDeliveryWeb.Business.Configuration;
+using CargoDeliveryWeb.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllersWithViews();
+builder.Configuration
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+            .AddJsonFile("appsettings.secrets.json", optional: true, reloadOnChange: true)
+            .AddCommandLine(args)
+            .AddEnvironmentVariables()
+            .Build();
 
-builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddFluentValidationClientsideAdapters();
-builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+builder.Services.ConfigureWeb();
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        o => o.MigrationsAssembly("CargoDeliveryWeb")
-    ));
+var configuration = builder.Configuration;
+
+builder.Services.ConfigureBusiness(configuration);
+builder.Services.ConfigureData(configuration);
 
 var app = builder.Build();
 
@@ -23,23 +25,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Orders}/{action=Index}/{id?}");
-
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    try
-    {
-        var context = services.GetRequiredService<AppDbContext>();
-        context.Database.Migrate();
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine(ex.ToString());
-    }
-}
 
 app.Run();

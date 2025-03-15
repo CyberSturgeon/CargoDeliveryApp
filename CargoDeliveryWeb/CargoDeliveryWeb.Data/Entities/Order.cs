@@ -5,7 +5,6 @@ namespace CargoDeliveryWeb.Data.Entities;
 public class Order
 {
     public Guid Id { get; set; }
-    public BigInteger OrderNumber { get; set; }
     public string SenderCity { get; set; }
     public string SenderAddress { get; set; }
     public string ReceiverCity { get; set; }

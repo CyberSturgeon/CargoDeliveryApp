@@ -2,7 +2,7 @@
 
 namespace CargoDeliveryWeb.Models.Validatiion;
 
-public class OrderValidator : AbstractValidator<Order>
+public class OrderValidator : AbstractValidator<OrderRequest>
 {
     public OrderValidator()
     {

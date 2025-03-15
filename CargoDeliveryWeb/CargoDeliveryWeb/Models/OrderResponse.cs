@@ -1,8 +1,8 @@
 ﻿using System.Numerics;
 
-namespace CargoDeliveryWeb.Business.Models;
+namespace CargoDeliveryWeb.Models;
 
-public class OrderModel
+public class OrderResponse
 {
     public Guid Id { get; set; }
     public string SenderCity { get; set; }
